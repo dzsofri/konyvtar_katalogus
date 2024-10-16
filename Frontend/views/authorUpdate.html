@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Könyvtár</title>
+    <link rel="stylesheet" href="../assets/css/app.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+</head>
+<body>
+    
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="color: black !important; font-size: larger; font-weight: bold;" href="#">Könyvtár katalógus</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item lgdOut">
+                        <a class="nav-link" href="#authors">Szerzők</a>
+                    </li>
+                    <li class="nav-item lgdOut">
+                        <a class="nav-link" href="/Frontend/views/konyvek.html" >Könyvek</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    </header>
+
+</div>
+<div class="container mt-5 mb-5" style="width: 50%;">
+    <h2>Adatok módosítása:</h2>
+    <form id="addProductForm">
+        <div class="col mb-3 mt-4">
+            <div class="col mb-3">
+                <label for="authorName">Szerző neve</label>
+                <input type="text" class="form-control" id="authorName" placeholder="Szerző">
+                
+            </div>
+            <div class="col mb-3">
+                <label for="authorBirthDate">Szerző születési dátuma</label>
+                <input type="date" class="form-control" id="authorBirthDate" placeholder="Születési idő">
+                
+            </div>
+            
+        </div>
+        <button type="button" class="btn btn-primary" id="saveChanges">Módosítás</button>
+    </form>
+</div>
+</div>
+
+
+    <script src="../assets/js/authorsChange.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+</body>
+</html>
