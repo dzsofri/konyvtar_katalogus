@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 </head>
 <body>
-<header><nav class="navbar navbar-expand-lg bg-body-tertiary">
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" style="color: black !important; font-size: larger; font-weight: bold;" href="#">Könyvtár katalógus</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,7 +26,8 @@
             </ul>
         </div>
     </div>
-</nav></header>
+</nav>
+</header>
     <main>
     <div class="container col">
         <div class="container mt-5" style="width: 50%;" >
@@ -50,7 +52,7 @@
         </div>
         <div class="container mt-5 mb-5" style="width: 50%;">
             <h2>Új adatok felvitele:</h2>
-            <form id="addProductForm"  ">
+            <form id="addProductForm">
                 <div class="col mb-3 mt-4">
                     <div class="col mb-3">
                         <label for="authorName">Szerző neve</label>
@@ -64,12 +66,12 @@
                     </div>
                     
                 </div>
-                <button type="button" class="btn btn-primary" onclick="">Hozzáadás</button>
+                <button type="button" class="btn btn-primary" onclick="Upload()">Hozzáadás</button>
             </form>
         </div>
     </div>
 </main>
-    <script src="../assets/js/APP.js"></script>
+    <script src="../assets/js/authors.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
 </body>
 </html>
