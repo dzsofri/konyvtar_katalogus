@@ -28,49 +28,34 @@
 </nav></header>
     <main>
     <div class="container col">
-        <div class="container mt-5" style="width: 50%;" >
-           
-            <table class="table table-striped table-bordered">
-                <thead class="table-dark">
-                    <tr id="tr">
-                        <th scope="col">#</th>
-                        <th scope="col">Cím</th>
-                        <th scope="col">Kiadás éve</th>
-                        <th scope="col">ISBN szám</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                   <!-- Ide jönnek az adatok :)-->
-                </tbody>
-                <tfoot>
-                   
-                </tfoot>
-            </table>
+        <div class="container col">
+            <div class="container mt-5" style="width: 50%;" >
+               
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr id="tr">
+                            <th scope="col">#</th>
+                            <th scope="col">Cím</th>
+                            <th scope="col">Kiadás éve</th>
+                            <th scope="col">ISBN szám</th>
+                            <th scope="col">sze</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                       <!-- Ide jönnek az adatok :)-->
+                    </tbody>
+                    <tfoot>
+                       
+                    </tfoot>
+                </table>
+            </div>
+            
         </div>
-        <div class="container mt-5 mb-5" style="width: 50%;">
-            <h2>Új adatok felvitele:</h2>
-            <form id="addProductForm"  ">
-                <div class="col mb-3 mt-4">
-                    <div class="col mb-3">
-                        <label for="bookTitle">Könyv címe</label>
-                        <input type="text" class="form-control" id="bookTitle" placeholder="">
-                    </div>
-                    <div class="col mb-3">
-                        <label for="releseDate">Kiadás éve</label>
-                        <input type="date" class="form-control" id="releseDate" placeholder="">
-                    </div>
-                    <div class="col mb-3">
-                        <label for="ISBNnumber">ISBN szám</label>
-                        <input type="number" class="form-control" id="ISBNnumber" placeholder="">
-                    </div>
-                    
-                </div>
-                <button type="button" class="btn btn-primary" onclick="">Hozzáadás</button>
-            </form>
-        </div>
-    </div>
+        
+        <a class="btn btn-primary" href="/Frontend/views/konyvfelvetel.html">Új könyv hozzáadása</a>
+
 </main>
     <script src="../assets/js/books.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
