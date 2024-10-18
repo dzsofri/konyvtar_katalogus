@@ -1,6 +1,3 @@
-
-const moment = require('moment')
-
   require('dotenv').config();
   const express = require('express');
   var mysql = require('mysql');
@@ -47,6 +44,7 @@ app.get('/authors', (req, res) => {
       return;
     });
 });
+
 
 app.get('/authors/:id', (req, res) => {
   const authorID = req.params.id;

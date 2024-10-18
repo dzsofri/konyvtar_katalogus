@@ -17,7 +17,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item lgdOut">
-                    <a class="nav-link" href="/Frontend/views/index.html">Szerzők</a>
+                    <a class="nav-link" href="/Frontend/views/index.html"">Szerzők</a>
                 </li>
                 <li class="nav-item lgdOut">
                     <a class="nav-link" href="#books" >Könyvek</a>
@@ -27,37 +27,32 @@
     </div>
 </nav></header>
     <main>
+
+        <a class="btn btn-primary m-3" href="/Frontend/views/index.html">Vissza</a>
     <div class="container col">
-        <div class="container col">
-            <div class="container mt-5" style="width: 50%;" >
-               
-                <table class="table table-striped table-bordered">
-                    <thead class="table-dark">
-                        <tr id="tr">
-                            <th scope="col">#</th>
-                            <th scope="col">Cím</th>
-                            <th scope="col">Kiadás éve</th>
-                            <th scope="col">ISBN szám</th>
-                            <th scope="col">Szerző</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody">
-                       <!-- Ide jönnek az adatok :)-->
-                    </tbody>
-                    <tfoot>
-                       
-                    </tfoot>
-                </table>
-            </div>
-            
+        <div class="container mt-5 mb-5" style="width: 50%;">
+            <h2>Új adatok felvitele:</h2>
+            <form id="addProductForm">
+                <div class="col mb-3 mt-4">
+                    <div class="col mb-3">
+                        <label for="authorName">Szerző neve</label>
+                        <input type="text" class="form-control" id="authorName" placeholder="Szerző">
+                        
+                    </div>
+                    <div class="col mb-3">
+                        <label for="authorBirthDate">Szerző születési dátuma</label>
+                        <input type="date" class="form-control" id="authorBirthDate" placeholder="Születési idő">
+                        
+                    </div>
+                    
+                </div>
+                <button type="button" class="btn btn-primary" onclick="Upload()">Módosítás</button>
+            </form>
         </div>
         
-        <a class="btn btn-primary" href="/Frontend/views/konyvfelvetel.html">Új könyv hozzáadása</a>
-
+    </div>
 </main>
-    <script src="../assets/js/books.js"></script>
+    <script src="../assets/js/authors.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
 </body>
 </html>

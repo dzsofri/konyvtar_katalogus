@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
             birthdate: document.getElementById('authorBirthDate').value,
         };
  
-        fetch(`http://localhost:3000/authors/${id}`, {
+        fetch(`http://localhost:3000/authors/${authorID}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

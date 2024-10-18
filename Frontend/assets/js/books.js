@@ -22,20 +22,37 @@ function LoadData() {
                     let td4 = document.createElement('td'); 
                     let td5 = document.createElement('td'); 
                     let td6 = document.createElement('td');
-                    
+                    let td7 = document.createElement('td');
+
                     td1.innerHTML = (index++) + '.';  // Sorszám
 
                     // Szerkeszthető input mezők minden sorhoz
-                    td2.innerHTML = `<input type='text' class="form-control" id='title_${item.ID}' value='${item.title}' />`;
-                    td3.innerHTML = `<input type='date' class="form-control" id='releasedate_${item.ID}' value='${item.releasedate}' />`;
-                    td4.innerHTML = `<input type='text' class="form-control" id='ISBN_${item.ID}' value='${item.ISBN}' />`;
+                    td2.innerHTML = `<p id='title_${item.ID}'>${item.title}</p>`;
+                    td3.innerHTML = `<p id='releasedate_${item.ID}'>${item.releasedate}</p>`;
+                    td4.innerHTML = `<p id='ISBN_${item.ID}'>${item.ISBN}</p>`;
+
+                    fetch(`http://localhost:3000/books/${bookId}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('A könyv módosítása sikerült!');
+                            window.location.href = '/Frontend/views/konyvek.html'; // Átirányítás a főoldalra
+                        } else {
+                            alert('Hiba történt a módosítás során.');
+                        }
+                    })
+                    .catch(error => console.error('Hiba a módosítás során:', error));
 
                     // Módosítás/Mentés gomb hozzáadása, most linkként
                     let updateBtn = document.createElement('a'); 
                     updateBtn.classList.add('btn', 'btn-primary');
                     updateBtn.textContent = 'Módosítás';
                     updateBtn.href = `/Frontend/views/konyvModositas.html?id=${item.ID}`; // Az ID átadása a módosító oldalra
-                    td5.appendChild(updateBtn);
+                    td6.appendChild(updateBtn);
                     
                     // Törlés gomb
                     let deleteBtn = document.createElement('button');
@@ -44,7 +61,7 @@ function LoadData() {
                     deleteBtn.addEventListener('click', function() {
                         deleteItem(item.ID);
                     });
-                    td6.appendChild(deleteBtn);
+                    td7.appendChild(deleteBtn);
 
                     tr.appendChild(td1);
                     tr.appendChild(td2);
@@ -52,6 +69,7 @@ function LoadData() {
                     tr.appendChild(td4);
                     tr.appendChild(td5);
                     tr.appendChild(td6);
+                    tr.appendChild(td7);
                     tbody.appendChild(tr);
                 });
 
