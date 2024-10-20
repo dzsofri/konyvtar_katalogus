@@ -1,12 +1,12 @@
 let tbody = document.querySelector('#tbody');
-
-
-var xhr = new XMLHttpRequest();
 let index = 1;
 
+// Könyvek betöltése
 function LoadData() {
     return new Promise((resolve, reject) => {
-        tbody.innerHTML = '';
+        tbody.innerHTML = ''; // Ürítsük ki a tbody-t
+        let xhr = new XMLHttpRequest(); // Új XMLHttpRequest példány
+
         xhr.open('GET', 'http://localhost:3000/books', true);
         xhr.send();
 
@@ -20,38 +20,21 @@ function LoadData() {
                     let td2 = document.createElement('td'); 
                     let td3 = document.createElement('td'); 
                     let td4 = document.createElement('td'); 
-                    let td5 = document.createElement('td'); 
-                    let td6 = document.createElement('td');
-                    let td7 = document.createElement('td');
+                    let td5 = document.createElement('td'); // Szerzők neve
+                    let td6 = document.createElement('td'); // Módosítás
+                    let td7 = document.createElement('td'); // Törlés
 
                     td1.innerHTML = (index++) + '.';  // Sorszám
-
-                    // Szerkeszthető input mezők minden sorhoz
                     td2.innerHTML = `<p id='title_${item.ID}'>${item.title}</p>`;
                     td3.innerHTML = `<p id='releasedate_${item.ID}'>${item.releasedate}</p>`;
                     td4.innerHTML = `<p id='ISBN_${item.ID}'>${item.ISBN}</p>`;
-
-                    fetch(`http://localhost:3000/books/${bookId}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            alert('A könyv módosítása sikerült!');
-                            window.location.href = '/Frontend/views/konyvek.html'; // Átirányítás a főoldalra
-                        } else {
-                            alert('Hiba történt a módosítás során.');
-                        }
-                    })
-                    .catch(error => console.error('Hiba a módosítás során:', error));
-
-                    // Módosítás/Mentés gomb hozzáadása, most linkként
+                    td5.innerHTML = item.authorNames || 'Nincs szerző'; // Szerzők neve
+                    
+                    // Módosítás gomb
                     let updateBtn = document.createElement('a'); 
                     updateBtn.classList.add('btn', 'btn-primary');
                     updateBtn.textContent = 'Módosítás';
-                    updateBtn.href = `/Frontend/views/konyvModositas.html?id=${item.ID}`; // Az ID átadása a módosító oldalra
+                    updateBtn.href = `/Frontend/views/konyvModositas.html?id=${item.ID}`; // ID átadása
                     td6.appendChild(updateBtn);
                     
                     // Törlés gomb
@@ -81,97 +64,37 @@ function LoadData() {
     });
 }
 
-
-
-
-// Módosítás mentése
-function saveChanges(id) {
-    return new Promise((resolve, reject) => {
-        var updatedData = JSON.stringify({
-            title: document.querySelector(`#title_${id}`).value,
-            releasedate: document.querySelector(`#releasedate_${id}`).value,
-            ISBN: document.querySelector(`#ISBN_${id}`).value,
-        });
-
-        xhr.open('PATCH', `http://localhost:3000/books/${id}`, true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send(updatedData);
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    alert('Sikeres frissítés');
-                    LoadData();
-                    index = 1;
-                    resolve(); 
-                } else if (xhr.status !== 200) {
-                    reject('Adatok módosítása sikertelen!');
-                }
-            }
-        };
-    });
-}
-
+// Törlés funkció
 function deleteItem(id) {
     return new Promise((resolve, reject) => {
-        if (confirm('Biztosan törölni szeretnéd ezt a terméket?')) {
+        if (confirm('Biztosan törölni szeretnéd ezt a könyvet?')) {
+            let xhr = new XMLHttpRequest(); // Új XMLHttpRequest példány
             xhr.open('DELETE', `http://localhost:3000/books/${id}`, true);
             xhr.send();
 
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
-                       LoadData()
-                        index = 0;
+                        alert('A könyv törlése sikeres!');
+                        LoadData(); // Újratöltjük a könyvek listáját
+                        resolve(); 
                     } else {
                         alert('Törlés nem sikerült: ' + xhr.responseText);
+                        reject('Törlés sikertelen!'); // Hibakezelés
                     }
-                    resolve(); 
-                } else if (xhr.readyState == 4 && xhr.status !== 200) {
-                    reject('Adatok betöltése sikertelen!');
                 }
             };
         }
     });
 }
 
-function Upload() {
-    return new Promise((resolve, reject) => {
-      
-        var data = JSON.stringify({ 
-            title: document.querySelector('#bookTitle').value,
-            releasedate: document.querySelector('#releaseDate').value,  
-            ISBN: document.querySelector('#ISBNnumber').value,
+// Az oldal betöltésekor
+window.onload = function() {
+    LoadData()
+        .then(() => {
+            console.log('Adatok sikeresen betöltve');
+        })
+        .catch((error) => {
+            console.log(error);
         });
-
-       
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:3000/books', true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send(data);
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 202) {
-                    
-                    // Kiürítjük a mezőket
-                    document.querySelector('#bookTitle').value = "";
-                    document.querySelector('#releaseDate').value = "";
-                    document.querySelector('#ISBNnumber').value = "";
-                    resolve('Adatok sikeresen feltöltve!');
-                } else {
-                    alert(xhr.responseText);
-                    reject('Adatok feltöltése sikertelen!');
-                }
-            }
-        };
-    });
-}
-
-LoadData()
-    .then(() => {
-        console.log('Adatok sikeresen betöltve');
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+};
