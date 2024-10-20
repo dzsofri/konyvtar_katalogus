@@ -76,6 +76,7 @@ function deleteItem(id) {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
                         alert('A könyv törlése sikeres!');
+                        index = 1;
                         LoadData(); // Újratöltjük a könyvek listáját
                         resolve(); 
                     } else {

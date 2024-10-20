@@ -62,6 +62,7 @@ function Upload() {
                     document.querySelector('#ISBNnumber').value = "";
                     document.querySelector('#authorName').value = ""; // Kiürítjük a szerző választását
                     resolve('Adatok sikeresen feltöltve!');
+                    window.location.href = '/Frontend/views/konyvek.html'; // Átirányítás a főoldalra
                 } else {
                     console.error('Adatok feltöltése sikertelen!', xhr.responseText); // Hiba kiírása
                     alert(xhr.responseText);

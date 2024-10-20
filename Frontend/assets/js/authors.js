@@ -5,7 +5,7 @@ let index = 1;
 function LoadData() {
     return new Promise((resolve, reject) => {
        
-            //tbody.innerHTML = '';
+            tbody.innerHTML = '';
             xhr.open('GET', 'http://localhost:3000/authors', true);
             xhr.send();
        
@@ -81,6 +81,7 @@ function Upload(){
             }else{
                 alert(xhr.responseText);
                 index = 1;
+                window.location.href = '/Frontend/views/index.html'; // Átirányítás a főoldalra
             }
         }
     }
@@ -90,28 +91,34 @@ function Upload(){
 
 
 //fajankók törlése
-
 function deleteItem(id) {
-    if (confirm('Biztosan törölni szeretnéd ezt a felhasználót?')) {
-        // Create a new XMLHttpRequest instance for the delete operation
-        let deleteXhr = new XMLHttpRequest();
+    return new Promise((resolve, reject) => {
+        if (confirm('Biztosan törölni szeretnéd ezt a szerzőt?')) {
+            let xhr = new XMLHttpRequest(); // Új XMLHttpRequest példány
+            xhr.open('DELETE', `http://localhost:3000/authors/${id}?timestamp=${new Date().getTime()}`, true);
+            xhr.send();
 
-        // Add a timestamp to prevent caching issues
-        deleteXhr.open('DELETE', `http://localhost:3000/authors/${id}?timestamp=${new Date().getTime()}`, true);
-        deleteXhr.send();
-
-        deleteXhr.onreadystatechange = function() {
-            if (deleteXhr.readyState == 4) {
-                if (deleteXhr.status == 200) {
-                    index = 1;
-                    LoadData(); // Reload the data after successful deletion
-                } else {
-                    alert('Törlés nem sikerült: ' + deleteXhr.responseText);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        alert('A szerző törlése sikeres!');
+                        index = 1;
+                        LoadData();
+                        resolve(); 
+                        
+                    } else {
+                        alert('Törlés nem sikerült: ' + xhr.responseText);
+                        reject('Törlés sikertelen!'); // Hibakezelés
+                    }
                 }
-            }
-        };
-    }
+            };
+        }
+    });
 }
+
+
+
+
 
 function saveChanges(id) {
     return new Promise((resolve, reject) => {
@@ -139,10 +146,13 @@ function saveChanges(id) {
     });
 }
 
-LoadData()
-    .then(() => {
-        console.log('Adatok sikeresen betöltve');
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+// Az oldal betöltésekor
+window.onload = function() {
+    LoadData()
+        .then(() => {
+            console.log('Adatok sikeresen betöltve');
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
