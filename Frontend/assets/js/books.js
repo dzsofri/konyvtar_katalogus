@@ -4,8 +4,8 @@ let index = 1;
 // Könyvek betöltése
 function LoadData() {
     return new Promise((resolve, reject) => {
-        tbody.innerHTML = ''; // Ürítsük ki a tbody-t
-        let xhr = new XMLHttpRequest(); // Új XMLHttpRequest példány
+        tbody.innerHTML = '';
+        let xhr = new XMLHttpRequest(); 
 
         xhr.open('GET', 'http://localhost:3000/books', true);
         xhr.send();
@@ -20,15 +20,15 @@ function LoadData() {
                     let td2 = document.createElement('td'); 
                     let td3 = document.createElement('td'); 
                     let td4 = document.createElement('td'); 
-                    let td5 = document.createElement('td'); // Szerzők neve
-                    let td6 = document.createElement('td'); // Módosítás
-                    let td7 = document.createElement('td'); // Törlés
+                    let td5 = document.createElement('td'); 
+                    let td6 = document.createElement('td'); 
+                    let td7 = document.createElement('td'); 
 
-                    td1.innerHTML = (index++) + '.';  // Sorszám
+                    td1.innerHTML = (index++) + '.';  
                     td2.innerHTML = `<p id='title_${item.ID}'>${item.title}</p>`;
                     td3.innerHTML = `<p id='releasedate_${item.ID}'>${item.releasedate}</p>`;
                     td4.innerHTML = `<p id='ISBN_${item.ID}'>${item.ISBN}</p>`;
-                    td5.innerHTML = item.authorNames || 'Nincs szerző'; // Szerzők neve
+                    td5.innerHTML = item.authorNames || 'Nincs szerző'; 
                     
                     // Módosítás gomb
                     let updateBtn = document.createElement('a'); 
@@ -68,7 +68,7 @@ function LoadData() {
 function deleteItem(id) {
     return new Promise((resolve, reject) => {
         if (confirm('Biztosan törölni szeretnéd ezt a könyvet?')) {
-            let xhr = new XMLHttpRequest(); // Új XMLHttpRequest példány
+            let xhr = new XMLHttpRequest(); 
             xhr.open('DELETE', `http://localhost:3000/books/${id}`, true);
             xhr.send();
 
@@ -77,11 +77,11 @@ function deleteItem(id) {
                     if (xhr.status == 200) {
                         alert('A könyv törlése sikeres!');
                         index = 1;
-                        LoadData(); // Újratöltjük a könyvek listáját
+                        LoadData(); 
                         resolve(); 
                     } else {
                         alert('Törlés nem sikerült: ' + xhr.responseText);
-                        reject('Törlés sikertelen!'); // Hibakezelés
+                        reject('Törlés sikertelen!'); 
                     }
                 }
             };

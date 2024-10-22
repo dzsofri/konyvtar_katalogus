@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const params = new URLSearchParams(window.location.search); // Query paraméterek kinyerése
-    const authorID = params.get('id'); // ID kinyerése a query paraméterekből
+    const params = new URLSearchParams(window.location.search); 
+    const authorID = params.get('id'); 
  
     if (!authorID) {
         alert('A könyv ID-ja nem található.');
-        return; // Ha nincs ID, akkor leállítjuk a további végrehajtást
+        return; 
     }
  
-    // Könyv adatainak betöltése
+    
     fetch(`http://localhost:3000/authors/${authorID}`)
         .then(response => {
             if (!response.ok) {
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => {
             if (response.ok) {
                 alert('A szerző módosítása sikerült!');
-                window.location.href = '/Frontend/views/index.html'; // Átirányítás a főoldalra
+                window.location.href = '/Frontend/views/index.html'; 
             } else {
                 alert('Hiba történt a módosítás során.');
             }

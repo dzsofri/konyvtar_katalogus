@@ -79,7 +79,7 @@ app.post('/authors', (req, res)=>{
           res.status(500).send('Hiba történt az adatbázis művelet közben!');
           return;
          }
-         res.status(202).send('Sikeres volt a fajankó felvétele!');
+         res.status(202).send('Sikeres volt a szerző felvétele!');
 
          return;
       });
@@ -151,24 +151,42 @@ app.delete('/authors/:id',(req, res) => {
     });
    
 
-// Könyv lekérdezése ID alapján
-app.get('/books/:id', (req, res) => {
-    const bookId = req.params.id;
-    pool.query('SELECT * FROM books WHERE ID = ?', [bookId], (err, results) => {
-        if (err) {
-            res.status(500).send('Hiba történt az adatbázis lekérés közben!');
-            return;
-        }
-
-        if (results.length > 0) {
-            let book = results[0];
-            book.releasedate = moment(book.releasedate).format('YYYY-MM-DD'); // Dátum formázás
-            res.status(200).send(book);
-        } else {
-            res.status(404).send('Könyv nem található');
-        }
-    });
-});
+    app.get('/books/:id', (req, res) => {
+      const bookId = req.params.id;
+      const sql = `
+          SELECT 
+              books.ID, 
+              books.title, 
+              books.releasedate, 
+              books.ISBN, 
+              authors.ID AS authorID, 
+              authors.name AS authorName
+          FROM 
+              books
+          LEFT JOIN 
+              book_authors ON books.ID = book_authors.bookID
+          LEFT JOIN 
+              authors ON book_authors.authorsID = authors.ID
+          WHERE 
+              books.ID = ?;
+      `;
+  
+      pool.query(sql, [bookId], (err, results) => {
+          if (err) {
+              res.status(500).send('Hiba történt az adatbázis lekérés közben!');
+              return;
+          }
+  
+          if (results.length > 0) {
+              let book = results[0];
+              book.releasedate = moment(book.releasedate).format('YYYY-MM-DD');
+              res.status(200).send(book);
+          } else {
+              res.status(404).send('Könyv nem található');
+          }
+      });
+  });
+  
 
 
 // Könyvek lekérdezése
@@ -268,30 +286,49 @@ app.patch('/books/:id', (req, res) => {
   const bookId = req.params.id;
   const { title, releasedate, ISBN, authorID } = req.body;
 
+  // Ellenőrizzük, hogy minden adat rendelkezésre áll-e
   if (!bookId || !title || !releasedate || !ISBN || !authorID) {
-      return res.status(400).send('Hiányzó adatok!');
+    return res.status(400).send('Hiányzó adatok!');
   }
 
-  // Könyv adatainak frissítése
+  // Először frissítsük a könyv adatokat
   pool.query(`UPDATE books SET title=?, releasedate=?, ISBN=? WHERE ID=?`, [title, releasedate, ISBN, bookId], (err, results) => {
+    if (err) {
+      return res.status(500).send('Hiba történt az adatbázis műveletek során!');
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).send('Hibás azonosító!');
+    }
+
+    // Miután a könyv sikeresen frissült, frissítsük a kapcsolótáblát is
+    pool.query(`
+      UPDATE book_authors 
+      SET authorsID = ? 
+      WHERE bookID = ?
+    `, [authorID, bookId], (err, results) => {
       if (err) {
-          return res.status(500).send('Hiba történt az adatbázis műveletek során!');
+        return res.status(500).send('Hiba történt a kapcsolótábla frissítésekor!');
       }
 
+      // Ha a kapcsolótáblában nincs még ilyen kapcsolat, hozzunk létre egy újat
       if (results.affectedRows === 0) {
-          return res.status(404).send('Hibás azonosító!');
-      }
-
-      // Frissítjük a kapcsolótáblát is
-      pool.query(`INSERT INTO book_authors (bookID, authorsID) VALUES (?, ?) ON DUPLICATE KEY UPDATE authorsID=?`, [bookId, authorID, authorID], (err) => {
+        pool.query(`
+          INSERT INTO book_authors (bookID, authorsID) 
+          VALUES (?, ?)
+        `, [bookId, authorID], (err) => {
           if (err) {
-              return res.status(500).send('Hiba történt a kapcsolótábla frissítésekor!');
+            return res.status(500).send('Hiba történt új kapcsolat hozzáadásakor!');
           }
-
-          res.status(200).send('A könyv adatai módosítva!');
-      });
+          return res.status(200).send('A könyv adatai és a szerzői kapcsolat módosítva!');
+        });
+      } else {
+        return res.status(200).send('A könyv adatai és a szerzői kapcsolat módosítva!');
+      }
+    });
   });
 });
+
 
 
 //_______________

@@ -58,43 +58,14 @@ function LoadData() {
     });
 }
  
-// fajankó feltöltése
-function Upload(){
- 
-    var data = JSON.stringify({
-       name:document.querySelector('#authorName').value,
-       birthdate:document.querySelector('#authorBirthDate').value,
 
-    });
- 
-    xhr.open('POST', 'http://localhost:3000/authors', true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.send(data);
- 
-    xhr.onreadystatechange = function(){
-        if (xhr.readyState == 4){
-            if (xhr.status == 200){
-                
-                document.querySelector('#authorName').value="";
-                document.querySelector('#authorBirthDate').value="";
-                
-            }else{
-                alert(xhr.responseText);
-                index = 1;
-                window.location.href = '/Frontend/views/index.html'; // Átirányítás a főoldalra
-            }
-        }
-    }
- 
- 
-};
 
 
 //fajankók törlése
 function deleteItem(id) {
     return new Promise((resolve, reject) => {
         if (confirm('Biztosan törölni szeretnéd ezt a szerzőt?')) {
-            let xhr = new XMLHttpRequest(); // Új XMLHttpRequest példány
+            let xhr = new XMLHttpRequest(); 
             xhr.open('DELETE', `http://localhost:3000/authors/${id}?timestamp=${new Date().getTime()}`, true);
             xhr.send();
 
@@ -108,7 +79,7 @@ function deleteItem(id) {
                         
                     } else {
                         alert('Törlés nem sikerült: ' + xhr.responseText);
-                        reject('Törlés sikertelen!'); // Hibakezelés
+                        reject('Törlés sikertelen!');
                     }
                 }
             };
@@ -117,34 +88,6 @@ function deleteItem(id) {
 }
 
 
-
-
-
-function saveChanges(id) {
-    return new Promise((resolve, reject) => {
-        var updatedData = JSON.stringify({
-            name: document.querySelector(`#name_${id}`).value,
-            birthdate: document.querySelector(`#birthdate_${id}`).value,
-        });
- 
-        xhr.open('PATCH', `http://localhost:3000/authors/${id}`, true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send(updatedData);
- 
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    alert('Sikeres frissítés');
-                    index = 0;
-                    LoadData();
-                    resolve();
-                } else if (xhr.status !== 200) {
-                    reject('Adatok módosítása sikertelen!');
-                }
-            }
-        };
-    });
-}
 
 // Az oldal betöltésekor
 window.onload = function() {

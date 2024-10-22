@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const params = new URLSearchParams(window.location.search); // Query paraméterek kinyerése
-    const bookId = params.get('id'); // ID kinyerése a query paraméterekből
+    const params = new URLSearchParams(window.location.search); 
+    const bookId = params.get('id'); 
 
     if (!bookId) {
         alert('A könyv ID-ja nem található.');
-        return; // Ha nincs ID, akkor leállítjuk a további végrehajtást
+        return; 
     }
 
-    // Könyv adatainak betöltése
+   
     fetch(`http://localhost:3000/books/${bookId}`)
         .then(response => {
             if (!response.ok) {
@@ -20,10 +20,10 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('releaseDate').value = book.releasedate;
             document.getElementById('ISBNnumber').value = book.ISBN;
 
-            // Szerző beállítása
+           
             const authorSelect = document.querySelector('#authorName');
-            if (book.authorID) { // Ellenőrizzük, hogy van-e authorID
-                authorSelect.value = book.authorID; // Kiválasztja a megfelelő szerzőt
+            if (book.authorID) { 
+                authorSelect.value = book.authorID; 
             }
         })
         .catch(error => console.error('Hiba a könyv adatai betöltésekor:', error));
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
             title: document.getElementById('bookTitle').value,
             releasedate: document.getElementById('releaseDate').value,
             ISBN: document.getElementById('ISBNnumber').value,
-            authorID: document.querySelector('#authorName').value, // Különböző szerző ID
+            authorID: document.querySelector('#authorName').value,
         };
 
         fetch(`http://localhost:3000/books/${bookId}`, {
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => {
             if (response.ok) {
                 alert('A könyv módosítása sikerült!');
-                window.location.href = '/Frontend/views/konyvek.html'; // Átirányítás a főoldalra
+                window.location.href = '/Frontend/views/konyvek.html'; 
             } else {
                 alert('Hiba történt a módosítás során.');
             }
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // Szerzők betöltése
 function LoadAuthors() {
     return new Promise((resolve, reject) => {
-        let xhr = new XMLHttpRequest(); // Új XMLHttpRequest példány
+        let xhr = new XMLHttpRequest(); 
         xhr.open('GET', 'http://localhost:3000/authors', true);
         xhr.send();
 
@@ -71,12 +71,12 @@ function LoadAuthors() {
 
                     authors.forEach(author => {
                         const option = document.createElement('option');
-                        option.value = author.ID; // Szerző ID
-                        option.textContent = author.name; // Szerző neve
+                        option.value = author.ID;
+                        option.textContent = author.name; 
                         authorSelect.appendChild(option);
                     });
 
-                    resolve(); // Visszatérünk, ha a betöltés sikeres
+                    resolve(); 
                 } else {
                     reject('Hiba a szerzők betöltésekor: ' + xhr.statusText);
                 }
@@ -91,7 +91,7 @@ window.onload = function() {
     .then(() => {
         console.log('Szerzők sikeresen betöltve');
         
-        // Könyv adatainak betöltése és szerző beállítása
+        
         const params = new URLSearchParams(window.location.search);
         const bookId = params.get('id');
 
@@ -108,10 +108,10 @@ window.onload = function() {
                     document.getElementById('releaseDate').value = book.releasedate;
                     document.getElementById('ISBNnumber').value = book.ISBN;
 
-                    // Szerző beállítása
+                    
                     const authorSelect = document.querySelector('#authorName');
-                    if (book.authorID) { // Ellenőrizzük, hogy van-e authorID
-                        authorSelect.value = book.authorID; // Kiválasztja a megfelelő szerzőt
+                    if (book.authorID) { 
+                        authorSelect.value = book.authorID;
                     }
                 })
                 .catch(error => console.error('Hiba a könyv adatai betöltésekor:', error));

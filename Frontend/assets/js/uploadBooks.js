@@ -1,6 +1,6 @@
 function LoadAuthors() {
     return new Promise((resolve, reject) => {
-        let xhr = new XMLHttpRequest(); // Új XMLHttpRequest példány
+        let xhr = new XMLHttpRequest(); 
         xhr.open('GET', 'http://localhost:3000/authors', true);
         xhr.send();
 
@@ -12,12 +12,12 @@ function LoadAuthors() {
 
                     authors.forEach(author => {
                         const option = document.createElement('option');
-                        option.value = author.ID; // Szerző ID
-                        option.textContent = author.name; // Szerző neve
+                        option.value = author.ID;
+                        option.textContent = author.name; 
                         authorSelect.appendChild(option);
                     });
 
-                    resolve(); // Visszatérünk, ha a betöltés sikeres
+                    resolve();
                 } else {
                     reject('Hiba a szerzők betöltésekor: ' + xhr.statusText);
                 }
@@ -28,11 +28,11 @@ function LoadAuthors() {
 
 function Upload() {
     return new Promise((resolve, reject) => {
-        // Ellenőrizd, hogy a mezők nem üresek-e
+    
         const title = document.querySelector('#bookTitle').value;
         const releasedate = document.querySelector('#releaseDate').value;
         const ISBN = document.querySelector('#ISBNnumber').value;
-        const authorID = document.querySelector('#authorName').value; // Különböző szerző ID
+        const authorID = document.querySelector('#authorName').value; 
         console.log(authorID)
 
         if (!title || !releasedate || !ISBN || !authorID) {
@@ -48,23 +48,22 @@ function Upload() {
             authorID: authorID
         });
 
-        let xhr = new XMLHttpRequest(); // Új XMLHttpRequest példány
+        let xhr = new XMLHttpRequest(); 
         xhr.open('POST', 'http://localhost:3000/books', true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.send(data);
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4) {
-                if (xhr.status == 201) { // 201 az újonnan létrehozott erőforrás sikeres válasza
-                    // Kiürítjük a mezőket
+                if (xhr.status == 201) { 
+                    
                     document.querySelector('#bookTitle').value = "";
                     document.querySelector('#releaseDate').value = "";
                     document.querySelector('#ISBNnumber').value = "";
-                    document.querySelector('#authorName').value = ""; // Kiürítjük a szerző választását
+                    document.querySelector('#authorName').value = ""; 
                     resolve('Adatok sikeresen feltöltve!');
-                    window.location.href = '/Frontend/views/konyvek.html'; // Átirányítás a főoldalra
-                } else {
-                    console.error('Adatok feltöltése sikertelen!', xhr.responseText); // Hiba kiírása
+                    window.location.href = '/Frontend/views/konyvek.html'; 
+                    console.error('Adatok feltöltése sikertelen!', xhr.responseText); 
                     alert(xhr.responseText);
                     reject('Adatok feltöltése sikertelen!');
                 }
@@ -73,7 +72,7 @@ function Upload() {
     });
 }
 
-// Az oldal betöltésekor
+
 window.onload = function() {
     LoadAuthors()
     .then(() => {
